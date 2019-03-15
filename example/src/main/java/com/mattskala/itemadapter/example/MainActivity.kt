@@ -45,10 +45,9 @@ class MainActivity : AppCompatActivity() {
         return items
     }
 
-    class ExampleRenderer : ItemViewRenderer<ExampleItem, View>(ExampleItem::class.java) {
-        override fun createView(parent: ViewGroup): View {
-            val inflater = LayoutInflater.from(parent.context)
-            return inflater.inflate(R.layout.item_example, parent, false)
+    class ExampleRenderer : ItemLayoutRenderer<ExampleItem, View>(ExampleItem::class.java) {
+        override fun getLayoutResourceId(): Int {
+            return R.layout.item_example
         }
 
         override fun bindView(item: ExampleItem, view: View) = with(view) {

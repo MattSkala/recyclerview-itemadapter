@@ -9,14 +9,13 @@ import android.view.ViewGroup
  * eliminates the need for a ViewHolder, but requires another view caching mechanism to be used
  * (e.g. Kotlin synthetic properties, or a custom view holding references to child views).
  */
-abstract class ItemViewRenderer<M : Item, V : View>(modelClass: Class<M>) :
+abstract class ItemLayoutRenderer<M : Item, V : View>(modelClass: Class<M>) :
         ItemRenderer<M, ItemViewHolder>(modelClass) {
 
     /**
-     * Creates an item view.
-     * @param parent A view that can be used as the root when inflating a view.
+     * Returns a layout for creating an item view.
      */
-    abstract fun createView(parent: ViewGroup): V
+    abstract fun getLayoutResourceId(): Int
 
     /**
      * Binds an item model to the view.
@@ -26,7 +25,9 @@ abstract class ItemViewRenderer<M : Item, V : View>(modelClass: Class<M>) :
     abstract fun bindView(item: M, view: V)
 
     override fun createViewHolder(parent: ViewGroup): ItemViewHolder {
-        return ItemViewHolder(createView(parent))
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(getLayoutResourceId(), parent, false)
+        return ItemViewHolder(view)
     }
 
     override fun bindView(item: M, holder: ItemViewHolder) {
