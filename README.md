@@ -29,6 +29,36 @@ class ExampleRenderer : ItemRenderer<ExampleItem, ItemViewHolder>(ExampleItem::c
 }
 ```
 
+If you do not need direct access to a view holder, you can subclass `ItemViewRenderer` instead, which allows to return a view from the `createView` method and wraps it in a view holder internally.
+
+```
+class ExampleRenderer : ItemViewRenderer<ExampleItem, MyView>(ExampleItem::class.java) {
+    override fun createView(parent: ViewGroup): MyView {
+        return MyView(parent.context)
+    }
+
+    override fun bindView(item: ExampleItem, view: MyView) = with(view) {
+        view.title = item.title
+        view.subtitle = item.subtitle
+    }
+}
+```
+
+With `ItemLayoutRenderer`, you only have to return the layout resource ID in `getLayoutResourceId`, and the renderer inflates the layout automatically.
+
+```
+class ExampleRenderer : ItemLayoutRenderer<ExampleItem, View>(ExampleItem::class.java) {
+    override fun getLayoutResourceId(): Int {
+        return R.layout.item_example
+    }
+
+    override fun bindView(item: ExampleItem, view: View) = with(view) {
+        title.text = item.title
+        subtitle.text = item.subtitle
+    }
+}
+```
+
 ### 3. Register your renderer in ItemAdapter
 
 ```
@@ -38,6 +68,9 @@ val exampleRenderer = ExampleRenderer()
 adapter.registerRenderer(exampleRenderer)
 ```
 
+### 4. Update data
+
+The `ItemAdapter` has a built-in support for `DiffUtil`, which allows it to only re-render items that have been changed when data has been changed. To take advantage of it, pass an updated item list to `ItemAdapter.updateData` method whenever the data changes. Additionally, you can override `Item.areItemsTheSame` and `Item.areContentsTheSame` methods to provide custom logic for determining if items represent the same entity or that a content has changed. Refer to the documentation of the `DiffUtil.Callback` class for the expected behavior.
 
 ## References
 

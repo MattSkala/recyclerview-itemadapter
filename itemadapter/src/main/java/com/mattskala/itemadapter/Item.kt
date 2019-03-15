@@ -7,7 +7,14 @@ abstract class Item {
     /**
      * Checks if the items are same.
      */
-    open fun areItemsTheSame(other: Any?): Boolean {
+    open fun areItemsTheSame(other: Item): Boolean {
+        return this == other
+    }
+
+    /**
+     * Checks if the items have the same content.
+     */
+    open fun areContentsTheSame(other: Item): Boolean {
         return this == other
     }
 

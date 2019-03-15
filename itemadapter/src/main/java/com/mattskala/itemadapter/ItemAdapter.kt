@@ -21,7 +21,7 @@ open class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldItems[oldItemPosition] == newItems[newItemPosition]
+                return oldItems[oldItemPosition].areContentsTheSame(newItems[newItemPosition])
             }
 
             override fun getOldListSize(): Int {
@@ -37,16 +37,24 @@ open class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val renderer = renderers.get(viewType) as? ItemRenderer<*, *>
-                ?: throw Exception("No renderer registered for item " + getItemByViewType(viewType)?.javaClass)
-        return renderer.createViewHolder(parent)
+        return renderers.get(viewType).createViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val viewType = getItemViewType(position)
         val item = items[position]
+        @Suppress("UNCHECKED_CAST")
         val renderer = renderers.get(viewType) as? ItemRenderer<Item, ItemViewHolder>
-                ?: throw Exception("No renderer registered for item " + items[position])
+                ?: throw Exception("No renderer registered for item $item")
+        renderer.bindView(item, holder)
+    }
+
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: MutableList<Any>) {
+        val viewType = getItemViewType(position)
+        val item = items[position]
+        @Suppress("UNCHECKED_CAST")
+        val renderer = renderers.get(viewType) as? ItemRenderer<Item, ItemViewHolder>
+                ?: throw Exception("No renderer registered for item $item")
         renderer.bindView(item, holder)
     }
 
@@ -56,9 +64,5 @@ open class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return items[position].getType()
-    }
-
-    private fun getItemByViewType(viewType: Int): Item? {
-        return items.find { it.getType() == viewType }
     }
 }
