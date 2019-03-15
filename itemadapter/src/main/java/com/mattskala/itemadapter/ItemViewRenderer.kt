@@ -29,6 +29,7 @@ abstract class ItemViewRenderer<M : Item, V : View>(modelClass: Class<M>) :
     }
 
     override fun bindView(item: M, holder: ItemViewHolder) {
+        @Suppress("UNCHECKED_CAST")
         bindView(item, holder.itemView as V)
     }
 
