@@ -1,6 +1,5 @@
 package com.mattskala.itemadapter
 
-import android.view.View
 import android.view.ViewGroup
 
 /**
