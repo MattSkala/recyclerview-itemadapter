@@ -9,7 +9,7 @@ import android.view.ViewGroup
  * eliminates the need for a ViewHolder, but requires another view caching mechanism to be used
  * (e.g. a custom view holding references to child views).
  */
-abstract class LayoutItemRenderer<M : Item, V : View>(
+abstract class ItemLayoutRenderer<M : Item, V : View>(
     modelClass: Class<M>
 ) : ItemRenderer<M, ItemViewHolder>(modelClass) {
     /**
@@ -35,6 +35,3 @@ abstract class LayoutItemRenderer<M : Item, V : View>(
         bindView(item, holder.itemView as V)
     }
 }
-
-@Deprecated("Use LayoutItemRenderer or BindingItemRenderer instead")
-typealias ItemLayoutRenderer<M, V> = LayoutItemRenderer<M, V>

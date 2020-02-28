@@ -1,11 +1,14 @@
 package com.mattskala.itemadapter
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * An abstract item renderer that creates an item view holder and binds an item model to the view.
  */
-abstract class ItemRenderer<M : Item, VH : ItemViewHolder>(private val modelClass: Class<M>) {
+abstract class ItemRenderer<M : Item, VH : RecyclerView.ViewHolder>(
+    private val modelClass: Class<M>
+) {
     /**
      * Creates an item view holder.
      * @param parent A view that can be used as the root when inflating a view.
