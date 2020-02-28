@@ -6,9 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
 import com.mattskala.itemadapter.*
-import kotlinx.android.synthetic.main.item_example.view.*
+import com.mattskala.itemadapter.example.databinding.ItemExampleBinding
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -69,16 +68,16 @@ class MainActivity : AppCompatActivity() {
         return items
     }
 
-    class ExampleRenderer(private val onItemClick: (ExampleItem) -> Unit) :
-            LayoutItemRenderer<ExampleItem, View>(ExampleItem::class.java) {
-        override fun getLayoutResourceId(): Int {
-            return R.layout.item_example
-        }
-
-        override fun bindView(item: ExampleItem, view: View) = with(view) {
-            title.text = item.title
-            subtitle.text = item.subtitle
-            view.setOnClickListener { onItemClick(item) }
+    class ExampleRenderer(
+        private val onItemClick: (ExampleItem) -> Unit
+    ) : BindingItemRenderer<ExampleItem, ItemExampleBinding>(
+        ExampleItem::class.java,
+        ItemExampleBinding::inflate
+    ) {
+        override fun bindView(item: ExampleItem, binding: ItemExampleBinding) {
+            binding.title.text = item.title
+            binding.subtitle.text = item.subtitle
+            binding.root.setOnClickListener { onItemClick(item) }
         }
     }
 
