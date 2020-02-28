@@ -7,11 +7,11 @@ import android.view.ViewGroup
 /**
  * An abstract item renderer that creates an item view and binds an item model to it. It
  * eliminates the need for a ViewHolder, but requires another view caching mechanism to be used
- * (e.g. Kotlin synthetic properties, or a custom view holding references to child views).
+ * (e.g. a custom view holding references to child views).
  */
-abstract class ItemLayoutRenderer<M : Item, V : View>(modelClass: Class<M>) :
-        ItemRenderer<M, ItemViewHolder>(modelClass) {
-
+abstract class ItemLayoutRenderer<M : Item, V : View>(
+    modelClass: Class<M>
+) : ItemRenderer<M, ItemViewHolder>(modelClass) {
     /**
      * Returns a layout for creating an item view.
      */
@@ -34,5 +34,4 @@ abstract class ItemLayoutRenderer<M : Item, V : View>(modelClass: Class<M>) :
         @Suppress("UNCHECKED_CAST")
         bindView(item, holder.itemView as V)
     }
-
 }
