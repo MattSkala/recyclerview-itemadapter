@@ -69,23 +69,23 @@ class ExampleRenderer : ItemViewRenderer<ExampleItem, MyView>(ExampleItem::class
 With `ItemLayoutRenderer`, you only have to return the layout resource ID in `getLayoutResourceId`, 
 and the renderer inflates the layout automatically. Note that this class is easy to misuse. If
 you use synthetic properties to access child views in `bindView`, the views will not be cached and 
-`findViewById` will be called on every invocation on `bindView` method!
+`findViewById` will be called on every invocation of `bindView` method!
 
 ```kotlin
-class ExampleRenderer : ItemLayoutRenderer<ExampleItem, View>(ExampleItem::class.java) {
+class ExampleRenderer : ItemLayoutRenderer<ExampleItem, ExampleView>(ExampleItem::class.java) {
     override fun getLayoutResourceId(): Int {
         return R.layout.item_example
     }
 
-    override fun bindView(item: ExampleItem, view: View) = with(view) {
+    override fun bindView(item: ExampleItem, view: ExampleView) = with(view) {
         title.text = item.title
         subtitle.text = item.subtitle
     }
 }
 ```
 
-It is recommended to use `BindingItemRenderer`, which provides support for View Binding, a type-safe 
-way to access layout views with caching and a minimum amount of boilerplate.
+For this reason, it is recommended to use `BindingItemRenderer` which provides support for View 
+Binding, a type-safe way to access layout views with caching and the minimum amount of boilerplate:
 
 ```kotlin
 class ExampleRenderer : BindingItemRenderer<ExampleItem, ItemExampleBinding>(
