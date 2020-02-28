@@ -2,7 +2,7 @@
 
 **A RecyclerView adapter reducing boilerplate and improving item reusability**
 
-[ ![Download](https://api.bintray.com/packages/mattskala/maven/recyclerview-itemadapter/images/download.svg?version=0.2) ](https://bintray.com/mattskala/maven/recyclerview-itemadapter/0.2/link)
+[ ![Download](https://api.bintray.com/packages/mattskala/maven/recyclerview-itemadapter/images/download.svg?version=0.3) ](https://bintray.com/mattskala/maven/recyclerview-itemadapter/0.3/link)
 
 Never have to write an adapter again. Just use the provided `ItemAdapter` across the whole project
 and only define `ItemRenderer` for your items. You can register multiple renderers to one adapter,
@@ -14,7 +14,7 @@ reuse the same items across different recycler views in your app.
 Add the following to the dependencies section in `build.gradle`:
 
 ```groovy
-implementation 'com.mattskala:itemadapter:0.2'
+implementation 'com.mattskala:itemadapter:0.3'
 ```
 
 ## Usage
