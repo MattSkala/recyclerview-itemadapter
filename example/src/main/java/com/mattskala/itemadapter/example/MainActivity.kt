@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     class ExampleRenderer(private val onItemClick: (ExampleItem) -> Unit) :
-            ItemLayoutRenderer<ExampleItem, View>(ExampleItem::class.java) {
+            LayoutItemRenderer<ExampleItem, View>(ExampleItem::class.java) {
         override fun getLayoutResourceId(): Int {
             return R.layout.item_example
         }
