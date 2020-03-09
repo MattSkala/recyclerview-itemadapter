@@ -14,7 +14,7 @@ reuse the same items across different recycler views in your app.
 Add the following to the dependencies section in `build.gradle`:
 
 ```groovy
-implementation 'com.mattskala:itemadapter:0.3'
+implementation 'com.mattskala:itemadapter:0.4'
 ```
 
 ## Usage

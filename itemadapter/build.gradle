@@ -26,7 +26,7 @@ ext {
     siteUrl = 'https://github.com/MattSkala/recyclerview-itemadapter'
     gitUrl = 'https://github.com/MattSkala/recyclerview-itemadapter.git'
 
-    libraryVersion = '0.3'
+    libraryVersion = '0.4'
 
     developerId = 'mattskala'
     developerName = 'Matous Skala'
