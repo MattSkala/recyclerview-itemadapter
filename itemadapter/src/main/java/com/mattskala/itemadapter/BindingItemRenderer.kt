@@ -28,4 +28,30 @@ abstract class BindingItemRenderer<M : Item, V : ViewBinding>(
     override fun bindView(item: M, holder: BindingViewHolder<V>) {
         bindView(item, holder.binding)
     }
+
+    override fun onViewRecycled(holder: BindingViewHolder<V>) {
+        onViewRecycled(holder.binding)
+    }
+
+    override fun onFailedToRecycleView(holder: BindingViewHolder<V>): Boolean {
+        return onFailedToRecycleView(holder.binding)
+    }
+
+    override fun onViewAttachedToWindow(holder: BindingViewHolder<V>) {
+        onViewAttachedToWindow(holder.binding)
+    }
+
+    override fun onViewDetachedFromWindow(holder: BindingViewHolder<V>) {
+        onViewDetachedFromWindow(holder.binding)
+    }
+
+    open fun onViewRecycled(binding: V) {}
+
+    open fun onFailedToRecycleView(binding: V): Boolean {
+        return false
+    }
+
+    open fun onViewAttachedToWindow(binding: V) {}
+
+    open fun onViewDetachedFromWindow(binding: V) {}
 }

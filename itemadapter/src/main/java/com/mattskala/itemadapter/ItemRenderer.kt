@@ -23,6 +23,32 @@ abstract class ItemRenderer<M : Item, VH : RecyclerView.ViewHolder>(
     abstract fun bindView(item: M, holder: VH)
 
     /**
+     * Called when a view created by this renderer has been recycled.
+     * @see RecyclerView.Adapter.onViewRecycled
+     */
+    open fun onViewRecycled(holder: VH) {}
+
+    /**
+     * Called if a view created by this renderer cannot be recycled due to its transient state.
+     * @see RecyclerView.Adapter.onFailedToRecycleView
+     */
+    open fun onFailedToRecycleView(holder: VH): Boolean {
+        return false
+    }
+
+    /**
+     * Called when a view created by this renderer has been attached to a window.
+     * @see RecyclerView.Adapter.onViewAttachedToWindow
+     */
+    open fun onViewAttachedToWindow(holder: VH) {}
+
+    /**
+     * Called when a view created by this renderer has been detached from its window.
+     * @see RecyclerView.Adapter.onViewDetachedFromWindow
+     */
+    open fun onViewDetachedFromWindow(holder: VH) {}
+
+    /**
      * Returns an item type.
      */
     fun getType(): Int {

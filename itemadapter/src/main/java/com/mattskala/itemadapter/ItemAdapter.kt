@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var items = listOf<Item>()
-    private var renderers = SparseArray<ItemRenderer<out Item, out RecyclerView.ViewHolder>>()
+    private val renderers = SparseArray<ItemRenderer<out Item, out RecyclerView.ViewHolder>>()
 
     fun registerRenderer(renderer: ItemRenderer<out Item, out RecyclerView.ViewHolder>) {
         if (renderers[renderer.getType()] != null)
@@ -39,22 +39,43 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val renderer = renderers.get(viewType)
-            ?: throw Exception("No renderer registered for view type $viewType")
+        val renderer = getRenderer(viewType)
         return renderer.createViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewType = getItemViewType(position)
         val item = items[position]
-        @Suppress("UNCHECKED_CAST")
-        val renderer = renderers.get(viewType) as? ItemRenderer<Item, RecyclerView.ViewHolder>
-            ?: throw Exception("No renderer registered for item $item")
+        val renderer = getRenderer(viewType)
         renderer.bindView(item, holder)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         onBindViewHolder(holder, position)
+    }
+
+    private fun getRenderer(
+        viewType: Int
+    ): ItemRenderer<Item, RecyclerView.ViewHolder> {
+        @Suppress("UNCHECKED_CAST")
+        return renderers[viewType] as? ItemRenderer<Item, RecyclerView.ViewHolder>
+            ?: throw Exception("No renderer registered for viewType $viewType")
+    }
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        getRenderer(holder.itemViewType).onViewRecycled(holder)
+    }
+
+    override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean {
+        return getRenderer(holder.itemViewType).onFailedToRecycleView(holder)
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        getRenderer(holder.itemViewType).onViewAttachedToWindow(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        getRenderer(holder.itemViewType).onViewDetachedFromWindow(holder)
     }
 
     override fun getItemCount(): Int {
