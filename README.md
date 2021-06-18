@@ -2,7 +2,8 @@
 
 **A RecyclerView adapter reducing boilerplate and improving item reusability**
 
-[ ![Download](https://api.bintray.com/packages/mattskala/maven/recyclerview-itemadapter/images/download.svg?version=0.3) ](https://bintray.com/mattskala/maven/recyclerview-itemadapter/0.3/link)
+[![](https://jitpack.io/v/MattSkala/recyclerview-itemadapter.svg)](https://jitpack.io/#MattSkala/recyclerview-itemadapter)
+
 
 Never have to write an adapter again. Just use the provided `ItemAdapter` across the whole project
 and only define `ItemRenderer` for your items. You can register multiple renderers to one adapter,
@@ -11,10 +12,23 @@ reuse the same items across different recycler views in your app.
 
 ## Installation
 
-Add the following to the dependencies section in `build.gradle`:
+Add the JitPack repository to your build file:
 
 ```groovy
-implementation 'com.mattskala:itemadapter:0.4'
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the dependency
+
+```groovy
+dependencies {
+    implementation 'com.github.MattSkala:recyclerview-itemadapter:0.5'
+}
 ```
 
 ## Usage
@@ -34,7 +48,7 @@ class ExampleItem(val title: String, val subtitle: String) : Item()
 The item renderer defines how the item should be rendered. The base `ItemRenderer` requires you to
 implement two methods. Firstly, `createViewHolder` should create a new view holder instance
 containing the item view. Secondly, `bindView` should bind a given item to the previously
-created (and possibly recycled) view holder.  
+created (and possibly recycled) view holder.
 
 ```kotlin
 class ExampleRenderer : ItemRenderer<ExampleItem, ItemViewHolder>(ExampleItem::class.java) {
@@ -50,7 +64,7 @@ class ExampleRenderer : ItemRenderer<ExampleItem, ItemViewHolder>(ExampleItem::c
 }
 ```
 
-If you do not need direct access to a view holder, you can subclass `ItemViewRenderer` instead, 
+If you do not need direct access to a view holder, you can subclass `ItemViewRenderer` instead,
 which allows to return a view from the `createView` method and wraps it in a view holder internally.
 
 ```kotlin
@@ -66,9 +80,9 @@ class ExampleRenderer : ItemViewRenderer<ExampleItem, MyView>(ExampleItem::class
 }
 ```
 
-With `ItemLayoutRenderer`, you only have to return the layout resource ID in `getLayoutResourceId`, 
+With `ItemLayoutRenderer`, you only have to return the layout resource ID in `getLayoutResourceId`,
 and the renderer inflates the layout automatically. Note that this class is easy to misuse. If
-you use synthetic properties to access child views in `bindView`, the views will not be cached and 
+you use synthetic properties to access child views in `bindView`, the views will not be cached and
 `findViewById` will be called on every invocation of `bindView` method!
 
 ```kotlin
@@ -84,7 +98,7 @@ class ExampleRenderer : ItemLayoutRenderer<ExampleItem, ExampleView>(ExampleItem
 }
 ```
 
-For this reason, it is recommended to use `BindingItemRenderer` which provides support for View 
+For this reason, it is recommended to use `BindingItemRenderer` which provides support for View
 Binding, a type-safe way to access layout views with caching and the minimum amount of boilerplate:
 
 ```kotlin
@@ -114,16 +128,16 @@ adapter.registerRenderer(exampleRenderer)
 
 ### 4. Update data
 
-The `ItemAdapter` has a built-in support for `DiffUtil`, which allows it to only re-render items 
-that have been changed when data has been changed. To take advantage of it, pass an updated item 
-list to `ItemAdapter.updateItems` method whenever the data changes. 
+The `ItemAdapter` has a built-in support for `DiffUtil`, which allows it to only re-render items
+that have been changed when data has been changed. To take advantage of it, pass an updated item
+list to `ItemAdapter.updateItems` method whenever the data changes.
 
 ```kotlin
 adapter.updateItems(items)
 ```
 
-Additionally, you can override `Item.areItemsTheSame` and `Item.areContentsTheSame` methods to 
-provide custom logic for determining if items represent the same entity or that the content has 
+Additionally, you can override `Item.areItemsTheSame` and `Item.areContentsTheSame` methods to
+provide custom logic for determining if items represent the same entity or that the content has
 changed. Refer to the documentation of the `DiffUtil.Callback` class for the expected behavior.
 
 ## References
