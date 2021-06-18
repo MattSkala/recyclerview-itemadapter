@@ -54,4 +54,11 @@ abstract class ItemRenderer<M : Item, VH : RecyclerView.ViewHolder>(
     fun getType(): Int {
         return modelClass.hashCode()
     }
+
+    /**
+     * Returns an item type class name.
+     */
+    fun getTypeName(): String {
+        return modelClass.name
+    }
 }

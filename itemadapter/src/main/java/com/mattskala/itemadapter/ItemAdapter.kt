@@ -1,5 +1,6 @@
 package com.mattskala.itemadapter
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun registerRenderer(renderer: ItemRenderer<out Item, out RecyclerView.ViewHolder>) {
         if (renderers[renderer.getType()] != null)
-            throw IllegalArgumentException("A renderer for this item type is already registered")
+            Log.w("ItemAdapter", "A renderer for this item type (" + renderer.getTypeName() + ") is already registered")
         renderers.put(renderer.getType(), renderer)
     }
 
