@@ -60,7 +60,7 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ): ItemRenderer<Item, RecyclerView.ViewHolder> {
         @Suppress("UNCHECKED_CAST")
         return renderers[viewType] as? ItemRenderer<Item, RecyclerView.ViewHolder>
-            ?: throw Exception("No renderer registered for viewType $viewType")
+            ?: throw createMissingRendererException(viewType)
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -85,5 +85,14 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return items[position].getType()
+    }
+
+    private fun createMissingRendererException(viewType: Int): Exception {
+        for (item in items) {
+            if (item.getType() == viewType) {
+                return IllegalStateException("No renderer registered for item type ${item.javaClass.name}")
+            }
+        }
+        return IllegalStateException("No renderer registered for viewType $viewType")
     }
 }
