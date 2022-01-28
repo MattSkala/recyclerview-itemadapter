@@ -15,6 +15,10 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.w("ItemAdapter", "A renderer for this item type (" + renderer.getTypeName() + ") is already registered")
         renderers.put(renderer.getType(), renderer)
     }
+    
+    fun registerRenderers(vararg renderers: ItemRenderer<*, *>) {
+        renderers.forEach(::registerRenderer)
+    }
 
     fun updateItems(newItems: List<Item>) {
         val oldItems = this.items
