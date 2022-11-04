@@ -44,6 +44,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.mattskala.itemadapter'
 }
 
 // Because the components are created only during the afterEvaluate phase, you must
