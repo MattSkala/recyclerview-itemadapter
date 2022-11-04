@@ -19,6 +19,12 @@ abstract class BindingItemRenderer<M : Item, V : ViewBinding>(
      */
     abstract fun bindView(item: M, binding: V)
 
+    /**
+     * Updates a view to match the new item. Called when only contents of item have changed.
+     * @return true if view was updated, false if full bind should be executed
+     */
+    open fun updateView(item: M, binding: V): Boolean = false
+
     override fun createViewHolder(parent: ViewGroup): BindingViewHolder<V> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = bindingInflater(inflater, parent, false)
@@ -27,6 +33,10 @@ abstract class BindingItemRenderer<M : Item, V : ViewBinding>(
 
     override fun bindView(item: M, holder: BindingViewHolder<V>) {
         bindView(item, holder.binding)
+    }
+
+    override fun updateView(item: M, holder: BindingViewHolder<V>): Boolean {
+        return updateView(item, holder.binding)
     }
 
     override fun onViewRecycled(holder: BindingViewHolder<V>) {

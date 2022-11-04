@@ -19,6 +19,11 @@ abstract class Item {
     }
 
     /**
+     * Returns a change payload for item that has changed
+     */
+    open fun getChangePayload(other: Item): Any = other
+
+    /**
      * Returns an item type.
      */
     fun getType(): Int {
