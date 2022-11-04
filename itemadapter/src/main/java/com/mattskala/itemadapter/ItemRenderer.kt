@@ -23,6 +23,12 @@ abstract class ItemRenderer<M : Item, VH : RecyclerView.ViewHolder>(
     abstract fun bindView(item: M, holder: VH)
 
     /**
+     * Updates a view to match the new item. Called when only contents of item have changed.
+     * @return true if view was updated, false if full bind should be executed
+     */
+    abstract fun updateView(item: M, holder: VH): Boolean
+
+    /**
      * Called when a view created by this renderer has been recycled.
      * @see RecyclerView.Adapter.onViewRecycled
      */

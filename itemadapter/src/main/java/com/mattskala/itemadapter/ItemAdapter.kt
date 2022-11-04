@@ -1,10 +1,10 @@
 package com.mattskala.itemadapter
 
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
 open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var items = listOf<Item>()
@@ -12,10 +12,13 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun registerRenderer(renderer: ItemRenderer<out Item, out RecyclerView.ViewHolder>) {
         if (renderers[renderer.getType()] != null)
-            Log.w("ItemAdapter", "A renderer for this item type (" + renderer.getTypeName() + ") is already registered")
+            Log.w(
+                "ItemAdapter",
+                "A renderer for this item type (" + renderer.getTypeName() + ") is already registered"
+            )
         renderers.put(renderer.getType(), renderer)
     }
-    
+
     fun registerRenderers(vararg renderers: ItemRenderer<*, *>) {
         renderers.forEach(::registerRenderer)
     }
@@ -38,6 +41,10 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun getNewListSize(): Int {
                 return newItems.size
             }
+
+            override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any {
+                return oldItems[oldItemPosition].getChangePayload(newItems[newItemPosition])
+            }
         }, true)
         this.items = newItems
         result.dispatchUpdatesTo(this)
@@ -55,7 +62,18 @@ open class ItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         renderer.bindView(item, holder)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.firstOrNull() is Item) {
+            val viewType = getItemViewType(position)
+            val item = items[position]
+            val renderer = getRenderer(viewType)
+            val hasUpdated = renderer.updateView(item, holder)
+            if (hasUpdated) return
+        }
         onBindViewHolder(holder, position)
     }
 
