@@ -24,6 +24,12 @@ abstract class ItemViewRenderer<M : Item, V : View>(
      */
     abstract fun bindView(item: M, view: V)
 
+    /**
+     * Updates a view to match the new item. Called when only contents of item have changed.
+     * @return true if view was updated, false if full bind should be executed
+     */
+    open fun updateView(item: M, view: V): Boolean = false
+
     override fun createViewHolder(parent: ViewGroup): ItemViewHolder {
         return ItemViewHolder(createView(parent))
     }
@@ -31,5 +37,10 @@ abstract class ItemViewRenderer<M : Item, V : View>(
     override fun bindView(item: M, holder: ItemViewHolder) {
         @Suppress("UNCHECKED_CAST")
         bindView(item, holder.itemView as V)
+    }
+
+    override fun updateView(item: M, holder: ItemViewHolder): Boolean {
+        @Suppress("UNCHECKED_CAST")
+        return updateView(item, holder.itemView as V)
     }
 }
